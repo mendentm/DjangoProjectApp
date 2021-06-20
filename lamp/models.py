@@ -7,7 +7,7 @@ class Calendar(models.Model):
     CalendarText=models.CharField(max_length=255)
 
     def __str__(self):
-        return self.MeetingTitle
+        return self.CalendarTitle
 
     class Meta:
         db_table='Calendar'
@@ -17,8 +17,7 @@ class Alarms(models.Model):
     AlarmsText=models.TextField()
 
     def __str__(self):
-        return self.MeetingId
-
+        return self.AlarmsId
     class Meta:
         db_table="Alarms"
 

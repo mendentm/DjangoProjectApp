@@ -1,56 +1,56 @@
 from django.shortcuts import render, get_object_or_404
 from .models import Calendar, Alarms, Entries, Event
 from django.urls import reverse_lazy
-from .forms import MeetingForm, EventForm, ResourceForm
+from .forms import CalendarForm, EventForm, AlarmsForm, EntriesForm
 from django.contrib.auth.decorators import login_required
 # Create your views here.
 def index(request):
     return render(request, 'lamp/index.html')
 
 def calendar(request):
-    calendar_list=Resource.objects.all()
-    return render(request, 'lamp/calendar.html', {'calendar_list' : calendar_list})
+    calendar_list=Calendar.objects.all()
+    return render(request, 'lamp/index.html', {'calendar_list' : calendar_list})
 
 def alarms(request):
-    alarms_list=Meeting.objects.all()
+    alarms_list=Alarms.objects.all()
     return render(request, 'lamp/newalarm.html', {'alarms_list' : alarms_list})
 
-def entries(request, id):    
-    entries_view=get_object_or_404(Meeting, pk=id)
-    return render(request, 'lamp/newentry.html', {'entries_view': entries_view})
+def entries(request):    
+    entries_list=Entries.objects.all()
+    return render(request, 'lamp/newentry.html', {'entries_list': entries_list})
 
 def event(request, id):    
-    event_view=get_object_or_404(Meeting, pk=id)
+    event_view=get_object_or_404(Event, pk=id)
     return render(request, 'club/newevent.html', {'event_view': event_view})
 
 #forms 
 @login_required
-def newMeeting(request):
-    form=MeetingForm
+def new_calendar_form(request):
+    form=CalendarForm
 
     if request.method=='POST':
-        form=MeetingForm(request.POST)
+        form=CalendarForm(request.POST)
         if form.is_valid():
             post=form.save(commit=True)
             post.save()
-            form=MeetingForm()
+            form=CalendarForm()
     else:
-        form=MeetingForm()
-    return render(request, 'club/newmeeting.html', {'form': form})
+        form=CalendarForm()
+    return render(request, 'lamp/calendar.html', {'form': form})
 
 @login_required
-def newResource(request):
-    form=ResourceForm
+def newAlarms(request):
+    form=AlarmsForm
 
     if request.method=='POST':
-        form=ResourceForm(request.POST)
+        form=AlarmsForm(request.POST)
         if form.is_valid():
             post=form.save(commit=True)
             post.save()
-            form=ResourceForm()
+            form=AlarmsForm()
     else:
-        form=ResourceForm()
-    return render(request, 'club/newresource.html', {'form': form})
+        form=AlarmsForm()
+    return render(request, 'club/newalarm.html', {'form': form})
 
 @login_required
 def newEvent(request):
@@ -65,6 +65,22 @@ def newEvent(request):
     else:
         form=EventForm()
     return render(request, 'club/newevent.html', {'form': form})
+
+
+@login_required
+def newentry(request):
+    form=EntriesForm
+
+    if request.method=='POST':
+        form=EntriesForm(request.POST)
+        if form.is_valid():
+            post=form.save(commit=True)
+            post.save()
+            form=EntriesForm()
+    else:
+        form=EntriesForm()
+    return render(request, 'club/newentry.html', {'form': form})
+
 
 
 # login view

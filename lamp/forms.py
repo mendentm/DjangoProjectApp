@@ -1,7 +1,7 @@
 from django import forms
 from .models import Calendar, Alarms, Event, Entries
 
-class CalendatrForm(forms.ModelForm):
+class CalendarForm(forms.ModelForm):
     class Meta:
         model=Calendar
         fields='__all__'
